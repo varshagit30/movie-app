@@ -7,6 +7,7 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
 
   const API_KEY = "a987a54e";
   const BASE_URL = "https://www.omdbapi.com/";
@@ -32,7 +33,8 @@ const Home = () => {
       if (data.Response === "True") {
         setMovies(data.Search);
       } else {
-        setError(data.Error);
+        setMovies([]); 
+        setError("Movie not found!");
       }
     } catch (err) {
       setError("Failed to load movies...");
@@ -65,12 +67,30 @@ const Home = () => {
   // };
 
   useEffect(() => {
-    if (searchValue) {
-      getPopularMovies(searchValue);
+    if (debouncedSearchValue) {
+      getPopularMovies(debouncedSearchValue); // Fetch movies based on the debounced value
     } else {
       getPopularMovies("Action");
+      // setMovies([]); // Clear previous search results if search is empty
     }
+  }, [debouncedSearchValue]);
+
+  // Debounce handler: set a delay for the search query to trigger the API call
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchValue(searchValue); // Update debounced value after delay
+    }, 350); // Wait 500ms before making the API call
+
+    return () => clearTimeout(timer); // Clean up timer on component unmount or when searchValue changes
   }, [searchValue]);
+
+  // useEffect(() => {
+  //   if (searchValue) {
+  //     getPopularMovies(searchValue);
+  //   } else {
+  //     getPopularMovies("Action");
+  //   }
+  // }, [searchValue]);
 
   const handleSearch = (e) => {
     e.preventDefault();
