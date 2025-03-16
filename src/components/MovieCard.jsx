@@ -14,9 +14,13 @@ const MovieCard = ({movie}) => {
                 🤍
             </button>
         </div>
+        <div className="movie-info">
+            <h3>{movie.title}</h3>
+            <p>{movie.releaseDate}</p>
+
+        </div>
     </div>
     
-    MovieCard
     </div>;
 };
 
