@@ -6,10 +6,11 @@ import Favorites from "./pages/Favorites";
 import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import { FavoritesProvider } from "./context/FavoritesContext";
 
 function App() {
   return (
-    <div>
+    <FavoritesProvider>
       <NavBar />
       <main className="main-content">
         <Routes>
@@ -17,7 +18,7 @@ function App() {
           <Route path="/favorites" element={<Favorites />} />
         </Routes>
       </main>
-    </div>
+    </FavoritesProvider>
   );
 }
 
